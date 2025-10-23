@@ -23,7 +23,8 @@ SECRET_KEY = 'django-insecure-b2+#7g+t@wsz13qc7yircw*hetvsq9in%f^y*la81hakgu+^w*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False  # Must be False for production
 
-ALLOWED_HOSTS = ['*']  # Replace with your Render app domain if needed
+ALLOWED_HOSTS = ['family-fiesta.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 DATABASES = {
