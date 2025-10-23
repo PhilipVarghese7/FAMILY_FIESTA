@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -24,6 +25,14 @@ DEBUG = False  # Must be False for production
 
 ALLOWED_HOSTS = ['*']  # Replace with your Render app domain if needed
 
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # Application definition
 
