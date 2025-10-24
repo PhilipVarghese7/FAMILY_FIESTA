@@ -1,6 +1,28 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Result, Area
 
+
+
+
+# views.py
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def create_superuser(request):
+    """
+    Creates a superuser with username 'admin' if it doesn't exist.
+    Access this view once and then remove it for security.
+    """
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser(
+            username='admin', 
+            email='admin@example.com', 
+            password='Vasp1234@'
+        )
+        return HttpResponse("Superuser created successfully!")
+    else:
+        return HttpResponse("Superuser already exists.")
+
 def home(request):
     # Calculate total points per area
     area_points = {}
