@@ -133,6 +133,8 @@
         <a href="{% url 'results:home' %}" class="back-btn">&larr; Back to Points Table</a>
         <h1 class="title">{{ category.name }} – Event Results</h1>
 
+        {% comment %} Define events where only Area should be shown {% endcomment %}
+        {% with area_only_events="Group Song,Skit" %}
         {% for event in events %}
         <div class="event-card">
             <h4>{{ event.name }}</h4>
@@ -141,8 +143,8 @@
                     <thead>
                         <tr>
                             <th>Position</th>
-                            {% if category.name != 'Group Items' %}
-                            <th>Winner Name</th>
+                            {% if event.name != "Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan" and event.name != "Skit" %}
+                                <th>Winner Name</th>
                             {% endif %}
                             <th>Area</th>
                         </tr>
@@ -159,19 +161,20 @@
                                 {% else %}&nbsp;{% endif %}
                             </td>
 
-                            {% if category.name != 'Group Items' %}
-                            <td>
-                                {% if result.name %}{{ result.name }}{% else %}&nbsp;{% endif %}
-                            </td>
+                            {% comment %}
+                            ✅ Winner Name logic:
+                            Show Winner Name for all events except Group Song & Skit
+                            "Cooking Without Fire" will show Winner Name too
+                            {% endcomment %}
+                            {% if event.name != "Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan" and event.name != "Skit" %}
+                                <td>{{ result.name }}</td>
                             {% endif %}
 
-                            <td>
-                                {% if result.area %}{{ result.area.name }}{% else %}&nbsp;{% endif %}
-                            </td>
+                            <td>{{ result.area.name }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="{% if category.name != 'Group Items' %}3{% else %}2{% endif %}">&nbsp;</td>
+                            <td colspan="{% if event.name != 'Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan' and event.name != 'Skit' %}3{% else %}2{% endif %}">&nbsp;</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -179,6 +182,7 @@
             </div>
         </div>
         {% endfor %}
+        {% endwith %}
     </div>
 </body>
 </html>
