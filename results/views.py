@@ -9,6 +9,22 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 
+def create_render_admin(request):
+    """
+    Creates a superuser in the Render database if it doesn't exist.
+    Use this only once, then remove the URL.
+    """
+    username = 'pvrockz'  # change to your preferred username
+    email = 'admin@example.com'
+    password = 'Vasp1234@'
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username=username, email=email, password=password)
+        return HttpResponse("Superuser created successfully.")
+    else:
+        return HttpResponse("Superuser already exists.")
+
+
 def home(request):
     # Calculate total points per area
     area_points = {}
