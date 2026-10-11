@@ -1,188 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{{ category.name }} – Family Fiesta 2025</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* 🌈 Animated Gradient Background */
-        body {
-            background: linear-gradient(-45deg, #1a237e, #283593, #1565c0, #2196f3);
-            background-size: 400% 400%;
-            animation: gradientFlow 12s ease infinite;
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            color: #fff;
-            padding-bottom: 50px;
-        }
+  <meta charset="UTF-8">
+  <title>{{ category.name }} – Family Fiesta 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a237e">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --card: rgba(255,255,255,0.12);
+      --card-border: rgba(255,255,255,0.18);
+      --text: #fff;
+      --muted: #bbdefb;
+      --accent: #ffd54f;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(160deg, #1a237e 0%, #1565c0 55%, #2196f3 100%);
+      padding: 0 16px calc(32px + env(safe-area-inset-bottom));
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
 
-        /* 🏅 Title */
-        .title {
-            font-weight: 800;
-            text-align: center;
-            margin-top: 30px;
-            font-size: 2rem;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            animation: fadeDown 1s ease;
-        }
+    /* 🔙 Back button */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: calc(16px + env(safe-area-inset-top));
+      padding: 10px 16px; border-radius: 999px;
+      background: var(--card); border: 1px solid var(--card-border);
+      color: var(--text); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+    }
+    .back-btn:active { background: rgba(255,255,255,0.22); }
 
-        @keyframes fadeDown {
-            from {opacity: 0; transform: translateY(-20px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
+    /* 🏅 Header */
+    header { text-align: center; padding: 20px 0 8px; }
+    .label { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+    h1 { margin: 6px 0 0; font-size: 1.6rem; font-weight: 800; line-height: 1.2; }
 
-        /* 🔙 Back Button */
-        .back-btn {
-            margin: 20px 0;
-            display: inline-block;
-            text-decoration: none;
-            font-weight: 500;
-            color: #bbdefb;
-            transition: 0.3s;
-        }
+    /* 🧊 Event card */
+    .event-card {
+      margin-top: 18px; padding: 16px;
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 18px;
+    }
+    .event-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 10px; margin-bottom: 12px;
+    }
+    .event-name { margin: 0; font-size: 0.98rem; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+    .date-chip {
+      flex: 0 0 auto; padding: 4px 10px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+      background: rgba(255,213,79,0.18); color: var(--accent);
+    }
 
-        .back-btn:hover {
-            color: #fff;
-            text-decoration: underline;
-        }
+    /* 🥇 Result rows */
+    .results { display: flex; flex-direction: column; gap: 8px; }
+    .result-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px; border-radius: 14px;
+      background: rgba(255,255,255,0.10);
+    }
+    .result-row.p1 { background: linear-gradient(135deg, rgba(255,213,79,.30), rgba(255,255,255,.10)); border: 1px solid rgba(255,213,79,.55); }
+    .result-row.p2 { border: 1px solid rgba(224,224,224,.5); }
+    .result-row.p3 { border: 1px solid rgba(255,171,112,.5); }
 
-        /* 🧊 Event Card */
-        .event-card {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-            padding: 20px;
-            margin-bottom: 30px;
-            animation: fadeUp 0.8s ease;
-            transition: transform 0.3s;
-        }
+    .medal { flex: 0 0 36px; text-align: center; font-size: 1.6rem; line-height: 1; }
+    .pos-text { font-size: 0.7rem; color: var(--muted); display: block; margin-top: 2px; }
+    .result-info { flex: 1; min-width: 0; }
+    .winner { font-size: 0.95rem; font-weight: 600; overflow-wrap: anywhere; }
+    .area { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    /* area-only events (Group Song, Skit): area is the headline */
+    .area.solo { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-top: 0; }
 
-        .event-card:hover {
-            transform: scale(1.01);
-        }
+    .empty {
+      text-align: center; margin-top: 40px; padding: 22px; border-radius: 16px;
+      background: var(--card); color: var(--muted); font-style: italic;
+    }
 
-        .event-card h4 {
-            color: #e3f2fd;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-shadow: 0 0 6px rgba(0,0,0,0.3);
-        }
-
-        /* ✨ Table */
-        table {
-            border-collapse: separate;
-            border-spacing: 0;
-            border-radius: 16px;
-            overflow: hidden;
-            background: rgba(255,255,255,0.08);
-            box-shadow: 0 0 20px rgba(0,0,0,0.15);
-        }
-
-        thead {
-            background: linear-gradient(90deg, #42a5f5, #1e88e5);
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        tbody tr {
-            color: #e3f2fd;
-            transition: 0.3s;
-        }
-
-        tbody tr:hover {
-            background-color: rgba(255,255,255,0.15);
-            transform: scale(1.01);
-        }
-
-        td, th {
-            padding: 14px 10px;
-            vertical-align: middle;
-        }
-
-        td strong {
-            color: #bbdefb;
-        }
-
-        /* 🏅 Position Emoji Glow */
-        tbody tr td:first-child {
-            font-weight: bold;
-            text-shadow: 0 0 6px #90caf9;
-        }
-
-        /* 📱 Responsive */
-        @media (max-width: 768px) {
-            .title { font-size: 1.6rem; }
-            .back-btn { font-size: 0.9rem; }
-            table { font-size: 0.85rem; }
-            .event-card { padding: 15px; }
-        }
-    </style>
+    @media (prefers-reduced-motion: no-preference) {
+      .event-card { animation: rise .45s ease both; }
+      @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    }
+    @media (min-width: 600px) { h1 { font-size: 2rem; } }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <a href="{% url 'results:home' %}" class="back-btn">&larr; Back to Points Table</a>
-        <h1 class="title">{{ category.name }} – Event Results</h1>
+  <div class="wrap">
 
-        {% comment %} Define events where only Area should be shown {% endcomment %}
-        {% with area_only_events="Group Song,Skit" %}
-        {% for event in events %}
-        <div class="event-card">
-            <h4>{{ event.name }}</h4>
-            <div class="table-responsive">
-                <table class="table text-center align-middle">
-                    <thead>
-                        <tr>
-                            <th>Position</th>
-                            {% if event.name != "Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan" and event.name != "Skit" %}
-                                <th>Winner Name</th>
-                            {% endif %}
-                            <th>Area</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for result in event.results.all %}
-                        <tr>
-                            <td>
-                                {% if result.position %}
-                                    {% if result.position == 1 %}🥇 1st
-                                    {% elif result.position == 2 %}🥈 2nd
-                                    {% elif result.position == 3 %}🥉 3rd
-                                    {% endif %}
-                                {% else %}&nbsp;{% endif %}
-                            </td>
+    <a href="{% url 'results:home' %}" class="back-btn">&larr; Back to Points Table</a>
 
-                            {% comment %}
-                            ✅ Winner Name logic:
-                            Show Winner Name for all events except Group Song & Skit
-                            "Cooking Without Fire" will show Winner Name too
-                            {% endcomment %}
-                            {% if event.name != "Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan" and event.name != "Skit" %}
-                                <td>{{ result.name }}</td>
-                            {% endif %}
+    <header>
+      <div class="label">Event Results</div>
+      <h1>{{ category.name }}</h1>
+    </header>
 
-                            <td>{{ result.area.name }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="{% if event.name != 'Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan' and event.name != 'Skit' %}3{% else %}2{% endif %}">&nbsp;</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+    {% for event in events %}
+    <section class="event-card">
+      <div class="event-head">
+        <h2 class="event-name">{{ event.name }}</h2>
+        {% if event.date %}<span class="date-chip">{{ event.date|date:"j M" }}</span>{% endif %}
+      </div>
+
+      <div class="results">
+        {% for result in event.filled_results %}
+        <div class="result-row {% if result.position == 1 %}p1{% elif result.position == 2 %}p2{% elif result.position == 3 %}p3{% endif %}">
+          <div class="medal">
+            {% if result.position == 1 %}🥇<span class="pos-text">1st</span>
+            {% elif result.position == 2 %}🥈<span class="pos-text">2nd</span>
+            {% elif result.position == 3 %}🥉<span class="pos-text">3rd</span>
+            {% endif %}
+          </div>
+          <div class="result-info">
+            {% if event.area_only %}
+              <div class="area solo">{{ result.area.name }}</div>
+            {% else %}
+              <div class="winner">{{ result.name }}</div>
+              {% if result.area %}<div class="area">{{ result.area.name }}</div>{% endif %}
+            {% endif %}
+          </div>
         </div>
         {% endfor %}
-        {% endwith %}
-    </div>
+      </div>
+    </section>
+    {% empty %}
+    <p class="empty">⏳ Results for this category will be announced soon.</p>
+    {% endfor %}
+
+  </div>
 </body>
 </html>

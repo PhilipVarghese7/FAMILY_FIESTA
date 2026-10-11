@@ -10,30 +10,28 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import dj_database_url
-import os
+
 from pathlib import Path
+import os
+import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-insecure-key")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b2+#7g+t@wsz13qc7yircw*hetvsq9in%f^y*la81hakgu+^w*'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # Must be False for production
-
-ALLOWED_HOSTS = ['family-fiesta.onrender.com', 'localhost', '127.0.0.1']
-
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
+    CSRF_TRUSTED_ORIGINS = [f"https://{render_host}"]
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600,
-        ssl_require=True
     )
 }
+
 
 # Application definition
 

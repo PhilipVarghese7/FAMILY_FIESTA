@@ -9,22 +9,6 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 
-def create_render_admin(request):
-    """
-    Creates a superuser in the Render database if it doesn't exist.
-    Use this only once, then remove the URL.
-    """
-    username = 'pvrockz'  # change to your preferred username
-    email = 'admin@example.com'
-    password = 'Vasp1234@'
-
-    if not User.objects.filter(username=username).exists():
-        User.objects.create_superuser(username=username, email=email, password=password)
-        return HttpResponse("Superuser created successfully.")
-    else:
-        return HttpResponse("Superuser already exists.")
-
-
 def home(request):
     # Calculate total points per area
     area_points = {}
@@ -50,12 +34,24 @@ def home(request):
     })
 
 
+from django.db.models import Q, Exists, OuterRef, Prefetch
+from django.shortcuts import get_object_or_404, render
+from results.models import Category, Result
+
 def category_detail(request, category_id):
-    category = get_object_or_404(Category, id=category_id)
-    events = category.events.all()
-    results = Result.objects.filter(event__in=events)
-    return render(request, 'results/category_detail.html', {
-        'category': category,
-        'events': events,
-        'results': results
-    })
+    category = get_object_or_404(Category, pk=category_id)
+
+    # "Filled" = area chosen OR a winner name typed
+    filled = Result.objects.filter(Q(area__isnull=False) | ~Q(name__exact=''))
+
+    events = (
+        category.events
+        .annotate(has_results=Exists(filled.filter(event=OuterRef('pk'))))
+        .filter(has_results=True)
+        .order_by('date', 'name')
+        .prefetch_related(
+            Prefetch('results', queryset=filled.select_related('area').order_by('position'),
+                     to_attr='filled_results')
+        )
+    )
+    return render(request, 'results/category_detail.html', {'category': category, 'events': events})

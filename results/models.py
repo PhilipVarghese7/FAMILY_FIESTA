@@ -17,7 +17,12 @@ class Category(models.Model):
 # Events under each category
 class Event(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='events')
-    name = models.CharField(max_length=100)  # e.g., "Smiling Competition"
+    name = models.CharField(max_length=100)
+    date = models.DateField(null=True, blank=True)
+
+    @property
+    def area_only(self):
+        return self.name.startswith("Group Song") or self.name == "Skit"
 
     def __str__(self):
         return f"{self.name} ({self.category.name})"

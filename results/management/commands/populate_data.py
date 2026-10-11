@@ -1,8 +1,14 @@
+from datetime import date
+
 from django.core.management.base import BaseCommand
 from results.models import Area, Category, Event, Result
 
+DAY_1 = date(2026, 10, 11)
+DAY_2 = date(2026, 10, 24)
+
+
 class Command(BaseCommand):
-    help = 'Populate initial data for Family Fiesta 2025'
+    help = 'Populate initial data for Family Fiesta'
 
     def handle(self, *args, **kwargs):
         areas = [
@@ -19,64 +25,75 @@ class Command(BaseCommand):
 
         categories_with_events = {
             "Below 5 years": [
-                "Smiling Competition",
-                "Picking up sweets",
-                "Colouring Competition"
+                ("Picking up sweets", DAY_1),
+                ("Bible Character Presentation", DAY_1),
             ],
             "Above 5 & below 12 years": [
-                "Drawing Competition (Pencil Sketch)",
-                "Walk by Faith",
-                "Song Solo (Male): 279 Enikkayorthama Sampath",
-                "Song Solo (Female): 279 Enikkayorthama Sampath"
+                ("Pencil Drawing Competition", DAY_1),
+                ("Bible Character Presentation", DAY_1),
+                ("Song Solo (Male)", DAY_2),
+                ("Song Solo (Female)", DAY_2),
+                ("Instrumental Music (Key Board)", DAY_2),
+                ("Instrumental Music (Violin)", DAY_2),
+                ("Instrumental Music (Guitar)", DAY_2),
             ],
             "Above 12 & below 18 years": [
-                "Drawing Competition (Pencil Sketch)",
-                "Walk by Faith",
-                "Song Solo (Male): 201 Yesuvin Thiruppaadathil",
-                "Song Solo (Female): 201 Yesuvin Thiruppaadathil",
-                "Speech - 3 minutes"
+                ("Song Solo (Male)", DAY_2),
+                ("Song Solo (Female)", DAY_2),
+                ("Instrumental Music (Key Board)", DAY_2),
+                ("Instrumental Music (Violin)", DAY_2),
+                ("Instrumental Music (Guitar)", DAY_2),
+                ("Just A Minute (JAM)", DAY_1),
+                ("Essay Writing", DAY_1),
             ],
             "Above 18 & below 30 years": [
-                "Song Solo (Male): 73 Paadum Parama Rakhsakan Yesuve",
-                "Song Solo (Female): 73 Paadum Parama Rakhsakan Yesuve",
-                "Speech - 4 minutes",
-                "Essay Writing - 30 minutes",
-                "Instant Bible Reading"
+                ("Song Solo (Male)", DAY_2),
+                ("Song Solo (Female)", DAY_2),
+                ("Just A Minute (JAM)", DAY_1),
+                ("Essay Writing", DAY_1),
+                ("Instant Bible Reading", DAY_1),
             ],
             "Above 30 & below 60 years": [
-                "Song Solo (Male): 184 Thanaya Ninnude Perkkaayi",
-                "Song Solo (Female): 184 Thanaya Ninnude Perkkaayi",
-                "Speech - 4 minutes",
-                "Essay Writing - 30 minutes",
-                "Instant Bible Reading"
+                ("Song Solo (Male)", DAY_2),
+                ("Song Solo (Female)", DAY_2),
+                ("Essay Writing", DAY_1),
+                ("Instant Bible Reading", DAY_1),
+                ("Just A Minute (JAM)", DAY_1),
             ],
             "Above 60 years": [
-                "Song Solo (Male): 299 Modam Athi Modam Modam",
-                "Song Solo (Female): 299 Modam Athi Modam Modam",
-                "Walk by Faith",
-                "Speech - 4 minutes",
-                "Scripture: Spot & Read"
+                ("Song Solo (Male)", DAY_2),
+                ("Song Solo (Female)", DAY_2),
+                ("Instant Bible Reading", DAY_1),
+                ("Speech (Elocution)", DAY_1),
+                ("Essay Writing", DAY_1),
+            ],
+            "Instrumental Music (Above 18)": [
+                ("Key Board", DAY_2),
+                ("Violin", DAY_2),
+                ("Guitar", DAY_2),
             ],
             "Group Items": [
-                "Group Song - 436 Nin Daanam Njaan Anubhavichu / 380 En Kristhan Yodhaavaakuvaan",
-                "Cooking Without Fire",
-                "Skit"
-            ]
+                ("Group Song", DAY_2),
+                ("Family Song", DAY_2),
+                ("Cooking Without Fire", DAY_2),
+                ("Skit", DAY_2),
+            ],
         }
 
-        # Create categories, events, and blank results
+        # Create categories, events (with dates), and blank results
         for cat_name, events_list in categories_with_events.items():
             category, _ = Category.objects.get_or_create(name=cat_name)
-            for event_name in events_list:
-                event, _ = Event.objects.get_or_create(name=event_name, category=category)
+            for event_name, event_date in events_list:
+                event, _ = Event.objects.update_or_create(
+                    name=event_name,
+                    category=category,
+                    defaults={'date': event_date},
+                )
                 for pos in [1, 2, 3]:
                     Result.objects.get_or_create(
                         event=event,
                         position=pos,
-                        defaults={
-                            'name': '',  # blank winner name
-                            'area': None
-                        }
+                        defaults={'name': '', 'area': None}
                     )
 
-        self.stdout.write(self.style.SUCCESS('✅ Areas, Categories, Events, and blank Results populated successfully!'))
+        self.stdout.write(self.style.SUCCESS('✅ Areas, Categories, Events (with dates), and blank Results populated successfully!'))
